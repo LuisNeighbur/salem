@@ -1,6 +1,5 @@
 <?php 
-//namespace Salem;
-if(!defined('DINGO')){die('External Access to File Denied');}
+namespace Salem;
 use Salem\db, Salem\load,  Salem\config;
 /**
  * Authentication Library For Salem Framework
@@ -232,8 +231,8 @@ class auth
 				if(self::$_type != 'banned')
 				{
 					self::$_valid = TRUE;
-					session::set('user_email',self::$_email);
-					session::set('user_password',self::$_password);
+					\session::set('user_email',self::$_email);
+					\session::set('user_password',self::$_password);
 				}
 			}
 			
@@ -246,8 +245,8 @@ class auth
 	// ---------------------------------------------------------------------------
 	public static function logout()
 	{
-		session::delete('user_email');
-		session::delete('user_password');
+		\session::delete('user_email');
+		\session::delete('user_password');
 		
 		self::$_id = '';
 		self::$_email = '';
@@ -583,12 +582,11 @@ class user_update
 	}
 }
 
-
-
 // Load config file
 load::config('user');
 
-auth::init();
+//Initialize auth
+//auth::init();
 
 auth::$types = config::get('user_types');
 
@@ -596,8 +594,8 @@ auth::$types = config::get('user_types');
 auth::$table = db::db(config::get('user_table'),NULL,config::get('user_connection'));
 
 // Get session data
-auth::$_email = session::get('user_email');
-auth::$_password = session::get('user_password');
+auth::$_email = \session::get('user_email');
+auth::$_password = \session::get('user_password');
 
 // Get information about current user
 if(auth::$_email AND auth::$_password)
